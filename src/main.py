@@ -13,4 +13,3 @@ DATA_PATH = os.path.join(this_dir, "../data", "lyrics.txt")
 with open(DATA_PATH, 'r') as file_obj:
     data = file_obj.read().replace('\n', '')
 
-print(len(data))
