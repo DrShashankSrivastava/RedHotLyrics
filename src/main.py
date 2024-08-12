@@ -3,7 +3,10 @@
 import os
 import numpy as np
 import tensorflow as tf
-from tensorflow import keras
+from tensorflow.keras import Sequential
+from tensorflow.keras.layers import LSTM, Dense, Activation
+from tensorflow.keras.losses import CategoricalCrossentropy
+from tensorflow.keras.optimizers import RMSprop
 
 # Define data file path
 this_dir, this_filename = os.path.split(__file__)
@@ -45,10 +48,10 @@ for i, input_seq in enumerate(input_seqs):
     y[i, char_to_index[next_char[i]]] = 1
 
 # Create a Recurring Neural Network
-model = keras.models.Sequential()
-model.add(keras.layers.LSTM(128, input_shape=(SEQUENCE_LENGTH, len(characters))))
-model.add(keras.layers.Dense(len(characters)))
-model.add(keras.layers.Activation('softmax'))
-model.compile(loss=keras.losses.CategoricalCrossentropy, optimizer=keras.optimizers.RMSprop(learning_rate=0.01))
+model = Sequential()
+model.add(LSTM(128, input_shape=(SEQUENCE_LENGTH, len(characters))))
+model.add(Dense(len(characters)))
+model.add(Activation('softmax'))
+model.compile(loss=CategoricalCrossentropy(), optimizer=RMSprop(learning_rate=0.01))
 model.fit(x, y, batch_size=256, epochs=10)
 model.save("../Models/RedHotLyrics_v1.keras")
